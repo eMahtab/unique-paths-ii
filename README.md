@@ -30,31 +30,24 @@ If a cell contains an obstacle set it to 0 and continue. This is done to make su
 ```java
 class Solution {
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        if(obstacleGrid == null || obstacleGrid.length < 1 || obstacleGrid[0].length < 1)
-            return 0;
         int rows = obstacleGrid.length;
         int cols = obstacleGrid[0].length;
-        
-        obstacleGrid[0][0] = obstacleGrid[0][0] == 1 ? 0 : 1;
-        
-        for(int j = 1; j < cols; j++) {
-            obstacleGrid[0][j] = obstacleGrid[0][j] == 1 ? 0 : obstacleGrid[0][j-1];
-        }
-        for(int i = 1; i < rows; i++) {
-            obstacleGrid[i][0] = obstacleGrid[i][0] == 1 ? 0 : obstacleGrid[i-1][0];
-        }
+        if(obstacleGrid == null || obstacleGrid[0][0] == 1)
+          return 0;
+
+        obstacleGrid[0][0] = 1;
+        for(int col = 1; col < cols; col++)
+            obstacleGrid[0][col] = obstacleGrid[0][col] == 1 ? 0 : obstacleGrid[0][col-1];   
+        for(int row = 1; row < rows; row++) 
+            obstacleGrid[row][0] = obstacleGrid[row][0] == 1 ? 0 : obstacleGrid[row-1][0];
             
-        
-        for(int i = 1; i < rows; i++) {
-            for(int j = 1; j < cols; j++) {
-                if(obstacleGrid[i][j] == 1) {
-                    obstacleGrid[i][j] = 0;
-                } else {
-                    obstacleGrid[i][j] = obstacleGrid[i-1][j] + obstacleGrid[i][j-1];
-                }
+        for(int row = 1; row < rows; row++) {
+            for(int col = 1; col < cols; col++) {
+               obstacleGrid[row][col] = obstacleGrid[row][col] == 1 ? 0 :
+                                        obstacleGrid[row][col-1] + obstacleGrid[row-1][col];  
             }
-        }
-       return obstacleGrid[rows-1][cols-1]; 
+        }    
+        return obstacleGrid[rows-1][cols-1];  
     }
 }
 ```
